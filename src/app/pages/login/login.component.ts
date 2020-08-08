@@ -3,7 +3,8 @@ import { UsuarioModel } from "src/app/models/usuario.model";
 import { NgForm } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import Swal from "sweetalert2";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
+import { flatten } from "@angular/core/src/render3/util";
 
 @Component({
   selector: "app-login",
@@ -12,10 +13,16 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   usuario: UsuarioModel = new UsuarioModel();
+  recordarme = false;
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (localStorage.getItem("email")) {
+      this.usuario.email = localStorage.getItem("email");
+      this.recordarme = true; 
+    }
+  }
 
   login(form: NgForm) {
     if (form.invalid) {
@@ -28,18 +35,17 @@ export class LoginComponent implements OnInit {
     });
     Swal.showLoading();
 
-    console.log(form);
-
     this.auth
       .login(this.usuario)
       .then((res) => {
-        console.log(`Resultado de res ${res}`);
-        console.log(res);
         Swal.close();
-        this.router.navigateByUrl('/home')
+        this.router.navigateByUrl("/home");
+
+        if (this.recordarme) {
+          localStorage.setItem("email", this.usuario.email);
+        }
       })
       .catch((err) => {
-        console.log(`Resultado de err ${err}`);
         Swal.fire({
           type: "error",
           title: "Error al autenticar",

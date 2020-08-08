@@ -12,11 +12,16 @@ import { Router } from "@angular/router";
 })
 export class RegistroComponent implements OnInit {
   usuario: UsuarioModel;
+  recordarme = false;
 
   constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.usuario = new UsuarioModel();
+    // if (localStorage.getItem("email")) {
+    //   this.usuario.email = localStorage.getItem("email");
+    //   this.recordarme = true;
+    // }
   }
 
   onSubmit(form: NgForm) {
@@ -32,10 +37,11 @@ export class RegistroComponent implements OnInit {
     this.auth
       .nuevoUsuario(this.usuario)
       .then((res) => {
-        console.log(`Resultado de res ${res}`);
-        console.log(res);
         Swal.close();
-        this.router.navigateByUrl('/home')
+        this.router.navigateByUrl("/home");
+        if (this.recordarme) {
+          localStorage.setItem("email", this.usuario.email);
+        }
       })
       .catch((err) => {
         Swal.fire({

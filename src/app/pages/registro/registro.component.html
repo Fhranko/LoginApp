@@ -51,11 +51,11 @@
         </div>
 
         <span
-        class="text-danger animated fadeIn"
-        *ngIf="f.submitted && f.controls['password'].errors"
-      >
-        La contraseña debe tener almenos 6 caracteres
-      </span>
+          class="text-danger animated fadeIn"
+          *ngIf="f.submitted && f.controls['password'].errors"
+        >
+          La contraseña debe tener almenos 6 caracteres
+        </span>
         <div class="wrap-input100 m-b-16">
           <input
             class="input100"
@@ -72,6 +72,7 @@
         <div class="flex-sb-m w-full p-t-3 p-b-24">
           <div class="contact100-form-checkbox">
             <input
+              [(ngModel)]="recordarme"
               class="input-checkbox100"
               id="ckb1"
               type="checkbox"
