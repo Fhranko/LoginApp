@@ -13,29 +13,16 @@ export class AuthService {
   ) {}
 
   nuevoUsuario(usuario: UsuarioModel) {
-    this.angularAuth.auth.createUserWithEmailAndPassword(
+    return this.angularAuth.auth.createUserWithEmailAndPassword(
       usuario.email,
       usuario.password
-    ).then((res)=>{
-      console.log(res)
-      console.log("Usuario Creado satisfactoriamente")
-    }).catch((err)=>{
-      console.log(err)
-      console.log("ERROR an intentar crear usuario")
-    })
-    
+    );
   }
 
   login(usuario: UsuarioModel) {
-    this.angularAuth.auth
-      .signInWithEmailAndPassword(usuario.email, usuario.password)
-      .then((res) => {
-        console.log(res);
-        console.log("Usuario logueado");
-      })
-      .catch((err) => {
-        console.log(err.message);
-        console.log("ERROR");
-      });
+    return this.angularAuth.auth.signInWithEmailAndPassword(
+      usuario.email,
+      usuario.password
+    );
   }
 }
