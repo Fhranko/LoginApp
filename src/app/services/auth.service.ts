@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { AngularFireModule } from "@angular/fire";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { UsuarioModel } from "../models/usuario.model";
 
@@ -7,10 +6,11 @@ import { UsuarioModel } from "../models/usuario.model";
   providedIn: "root",
 })
 export class AuthService {
-  constructor(
-    private angularModule: AngularFireModule,
-    public angularAuth: AngularFireAuth
-  ) {}
+  constructor(private angularAuth: AngularFireAuth) {
+    this.leerToken();
+  }
+
+  userToken: string;
 
   nuevoUsuario(usuario: UsuarioModel) {
     return this.angularAuth.auth.createUserWithEmailAndPassword(
@@ -24,5 +24,23 @@ export class AuthService {
       usuario.email,
       usuario.password
     );
+  }
+
+  guardarToken(idToken: string) {
+    this.userToken = idToken;
+    localStorage.setItem("token", idToken);
+  }
+
+  leerToken() {
+    if (localStorage.getItem("token")) {
+      this.userToken = localStorage.getItem("token");
+    } else {
+      this.userToken = "";
+    }
+    return this.userToken;
+  }
+
+  estaAutenticado(): boolean {
+    return this.userToken.length > 2;
   }
 }
