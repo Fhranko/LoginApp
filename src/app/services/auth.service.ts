@@ -12,6 +12,10 @@ export class AuthService {
 
   userToken: string;
 
+  logOut(){
+    localStorage.removeItem('token');
+  }
+
   nuevoUsuario(usuario: UsuarioModel) {
     return this.angularAuth.auth.createUserWithEmailAndPassword(
       usuario.email,
